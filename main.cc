@@ -171,12 +171,9 @@ bool solve(shape& board, std::vector<shape>& shapes, int& steps) {
         }
     }
 
-    if (solve(board, shapes, steps)) {
-        return true;
-    }
-
+    auto res = solve(board, shapes, steps);
     shapes.push_back(std::move(s));
-    return false;
+    return res;
 }
 
 int main() {
@@ -353,6 +350,12 @@ int main() {
     std::cout << "Performed " << steps << " steps in " << std::chrono::duration_cast<std::chrono::duration<float>>(t2 - t1).count() << " [s].\n";
     if (solved) {
         std::cout << "Solution found:\n" << board << "\n";
+        if (!shapes.empty()) {
+            std::cout << "Unused shapes:\n";
+            for (auto&& s : shapes) {
+                std::cout << s << "\n";
+            }
+        }
         return 0;
     } else {
         std::cout << "Solution does not exist.\n";
